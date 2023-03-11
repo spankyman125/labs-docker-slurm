@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+
+  spankyman0:
+    build:
+      context: .
+      dockerfile: Dockerfile-slurm-main
+    restart: always
+    tty: true
+    container_name: spankyman0
+    hostname: spankyman0
+
+  spankyman1:
+    build:
+      context: .
+      dockerfile: Dockerfile-slurm-node
+    restart: always
+    tty: true
+    container_name: spankyman1
+    hostname: spankyman1
+
+  spankyman2:
+    build:
+      context: .
+      dockerfile: Dockerfile-slurm-node
+    restart: always
+    tty: true
+    container_name: spankyman2
+    hostname: spankyman2
+
+  spankyman3:
+    build:
+      context: .
+      dockerfile: Dockerfile-slurm-node
+    restart: always
+    tty: true
+    container_name: spankyman3
+    hostname: spankyman3
+
+  spankyman4:
+    build:
+      context: .
+      dockerfile: Dockerfile-slurm-node
+    restart: always
+    tty: true
+    container_name: spankyman4
+    hostname: spankyman4

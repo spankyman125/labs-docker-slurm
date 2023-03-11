@@ -1,0 +1,27 @@
+FROM ubuntu:22.04
+RUN apt update && apt install -y \
+  openmpi-bin \
+  openmpi-common \
+  libopenmpi-dev \
+  libgtk2.0-dev 
+
+COPY hello-world-mpi.c /home/
+RUN mpicc /home/hello-world-mpi.c -o /home/mpi.o
+
+RUN groupadd -g 991 munge
+RUN useradd  -m -c "MUNGE Uid 'N' Gid Emporium" -d /var/lib/munge -u 991 -g munge  -s /sbin/nologin munge
+RUN groupadd -g 992 slurm
+RUN useradd  -m -c "SLURM workload manager" -d /var/lib/slurm -u 992 -g slurm  -s /bin/bash slurm
+
+RUN apt install slurmd -y
+COPY slurm.conf /etc/slurm/
+COPY munge.key /etc/munge/
+RUN chown -R munge: /etc/munge/ /var/log/munge/
+RUN chmod 0700 /etc/munge/ /var/log/munge/
+RUN chown munge: /etc/munge/munge.key
+RUN chmod 400 /etc/munge/munge.key
+
+
+ENTRYPOINT service slurmd start \
+  && service munge start \
+  && /bin/bash
